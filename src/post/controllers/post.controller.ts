@@ -7,8 +7,8 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { PostService } from './post.service';
-import { CreatePostDto, UpdatePostDto } from './dto/post.dto';
+import { PostService } from '../services/post.service';
+import { CreatePostDto, UpdatePostDto } from '../dto/post.dto';
 
 @Controller('post')
 export class PostController {
