@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserSchema } from './models/user.model';
 import { UserRepository } from './repositories/user.repository';
@@ -11,6 +11,7 @@ import { AuthService } from './services/auth.service';
 import { ConfigModule } from '@nestjs/config';
 import { UserController } from './controllers/user.controller';
 
+// @Global()
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -34,5 +35,6 @@ import { UserController } from './controllers/user.controller';
   ],
   controllers: [AuthController, UserController],
   providers: [UserRepository, UserService, JwtStrategy, AuthService],
+  //   exports: [UserService, UserRepository],
 })
 export class UserModule {}

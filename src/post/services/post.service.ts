@@ -7,10 +7,13 @@ import {
 import { CreatePostDto, UpdatePostDto } from '../dto/post.dto';
 import { PostRepository } from '../repositories/post.repository';
 import { PostNotFoundException } from '../exceptions/postNotFound.exception';
+import { UserRepository } from 'src/user/repositories/user.repository';
 
 @Injectable()
 export class PostService {
-  constructor(private readonly postRepository: PostRepository) {}
+  constructor(
+    private readonly postRepository: PostRepository, // private readonly userRepository: UserRepository,
+  ) {}
 
   async getAllPosts() {
     return this.postRepository.getByCondition({});
