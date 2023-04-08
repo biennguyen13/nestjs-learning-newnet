@@ -8,7 +8,11 @@ export class CategoryController {
 
   @Get()
   async getAllCategories() {
-    return await this.categoryService.getAll();
+    const result = await this.categoryService.getAll();
+    await Promise.all(
+      result.map((item) => item.populate('posts').execPopulate()),
+    );
+    return result;
   }
 
   @Post()
