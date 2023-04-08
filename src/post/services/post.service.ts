@@ -25,7 +25,7 @@ export class PostService {
     const post = await this.postRepository.findById(post_id);
     if (post) {
       await post.populate('user', 'name _id email').execPopulate();
-      // await post.populate('categoriess').execPopulate();
+      await post.populate('categories').execPopulate();
       return post;
     } else {
       // throw new PostNotFoundException(post_id);
