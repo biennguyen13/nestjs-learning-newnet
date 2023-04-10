@@ -11,8 +11,8 @@ import {
   UseFilters,
   UseGuards,
 } from '@nestjs/common';
-import { PostService } from '../services/post.service';
 import { CreatePostDto, FindPostDto, UpdatePostDto } from '../dto/post.dto';
+import { PostService } from '../services/post.service';
 import { ExceptionLoggerFilter } from '../../utils/exceptionLogger.filter';
 import { HttpExceptionFilter } from '../../utils/httpException.filter';
 import { AuthGuard } from '@nestjs/passport';
@@ -22,7 +22,7 @@ export class PostController {
   constructor(private readonly postService: PostService) {}
 
   @Get()
-  getAllPosts() {
+  getAllPost() {
     return this.postService.getAllPosts();
   }
 
@@ -33,17 +33,17 @@ export class PostController {
     return await this.postService.getPostById(id);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  // @Get(':id')
+  // @UseFilters(HttpExceptionFilter)
+  // // @UseFilters(ExceptionLoggerFilter)
+  // getPostById(@Param('id') id: string) {
+  //   return this.postService.getPostById(id);
+  // }
+
   @Post()
+  @UseGuards(AuthGuard('jwt'))
   async createPost(@Req() req: any, @Body() post: CreatePostDto) {
     return this.postService.createPost(req.user, post);
-  }
-
-  @UseGuards(AuthGuard('jwt'))
-  @Get('user/all')
-  async getPostUser(@Req() req: any) {
-    await req.user.populate('posts').execPopulate();
-    return req.user.posts;
   }
 
   @Put(':id')
@@ -57,6 +57,13 @@ export class PostController {
     return true;
   }
 
+  @UseGuards(AuthGuard('jwt'))
+  @Get('user/all')
+  async getPostUser(@Req() req: any) {
+    await req.user.populate('posts').execPopulate();
+    return req.user.posts;
+  }
+
   @Get('get/category')
   async getByCategory(@Query('category_id') category_id) {
     return await this.postService.getByCategory(category_id);
@@ -65,5 +72,10 @@ export class PostController {
   @Get('get/categories')
   async getByCategories(@Query('category_ids') category_ids) {
     return await this.postService.getByCategories(category_ids);
+  }
+
+  @Get('get/array')
+  async getByArray() {
+    return this.postService.getByArray();
   }
 }

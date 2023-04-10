@@ -7,6 +7,7 @@ import {
 import { CreatePostDto, UpdatePostDto } from '../dto/post.dto';
 import { PostRepository } from '../repositories/post.repository';
 import { PostNotFoundException } from '../exceptions/postNotFound.exception';
+import { UserService } from '../../user/services/user.service';
 import { User } from '../../user/models/user.model';
 import { CategoryRepository } from '../repositories/category.repository';
 
@@ -14,6 +15,7 @@ import { CategoryRepository } from '../repositories/category.repository';
 export class PostService {
   constructor(
     private readonly postRepository: PostRepository,
+    private readonly userService: UserService,
     private readonly categoryRepository: CategoryRepository,
   ) {}
 
@@ -73,5 +75,19 @@ export class PostService {
 
   async deletePost(post_id: string) {
     return await this.postRepository.deleteOne(post_id);
+  }
+
+  async getByArray() {
+    return await this.postRepository.getByCondition({
+      // 'numbers.0': { $eq: 10 },
+      // numbers: { $elemMatch: { $gt: 13, $lt: 20 } },
+      // numbers: { $gt: 13, $lt: 20 },
+      // $and: [{ numbers: { $gt: 13 } }, { numbers: { $lt: 20 } }],
+      // tags: 'black',
+      // tags: { $all: ['black', 'blank'] },
+      // tags: ['red', 'blank'],
+      // tags: { $size: 3 },
+      tags: { $exists: false },
+    });
   }
 }
