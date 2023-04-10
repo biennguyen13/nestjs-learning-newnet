@@ -8,6 +8,7 @@ import { CategorySchema } from './models/category.model';
 import { CategoryService } from './services/category.service';
 import { CategoryRepository } from './repositories/category.repository';
 import { CategoryController } from './controllers/category.controller';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { CategoryController } from './controllers/category.controller';
         schema: CategorySchema,
       },
     ]),
+    UserModule,
   ],
   controllers: [PostController, CategoryController],
   providers: [PostService, CategoryService, PostRepository, CategoryRepository],
