@@ -25,14 +25,36 @@ export class PostService {
 
   async getPostById(post_id: string) {
     const post = await this.postRepository.findById(post_id);
+
     if (post) {
-      await post.populate('user', 'name _id email').execPopulate();
-      await post.populate('categories').execPopulate();
+      await post
+        // .populate({ path: 'user', select: '-password -refreshToken' })
+        // .populate({ path: 'user', select: 'name email' })
+        // .populate('categories')
+        .populate([
+          { path: 'user', select: 'name email' },
+          {
+            path: 'categories',
+            // match: {
+            //   _id: '62fd1a9473adb27682f0f440',
+            // },
+            select: 'title',
+            options: { limit: 100, sort: { name: 1 } },
+            // populate: [{
+            //   path: '',
+            // },]
+          },
+        ])
+        .execPopulate();
+      // console.log(post.populated('user'));
+      // post.depopulate('user');
+      // console.log(post.populated('user'));
       return post;
     } else {
+      throw new NotFoundException(post_id);
       // throw new PostNotFoundException(post_id);
-      throw new NotFoundException(`Post with id ${post_id} not found`);
     }
+    // throw new HttpException('Post not found', HttpStatus.NOT_FOUND);
   }
 
   async replacePost(post_id: string, data: UpdatePostDto) {
