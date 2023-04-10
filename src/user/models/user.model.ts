@@ -5,6 +5,7 @@ const UserSchema = new Schema(
     name: String,
     email: String,
     password: String,
+    refreshToken: String,
   },
   { timestamps: true, collection: 'users' },
 );
@@ -22,4 +23,5 @@ export interface User extends Document {
   name: string;
   email: string;
   password: string;
+  refreshToken: string;
 }
