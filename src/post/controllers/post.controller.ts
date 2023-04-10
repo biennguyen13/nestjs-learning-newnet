@@ -11,7 +11,11 @@ import {
   UseFilters,
   UseGuards,
 } from '@nestjs/common';
-import { CreatePostDto, FindPostDto, UpdatePostDto } from '../dto/post.dto';
+import {
+  CreatePostDto,
+  PaginationPostDto,
+  UpdatePostDto,
+} from '../dto/post.dto';
 import { PostService } from '../services/post.service';
 import { ExceptionLoggerFilter } from '../../utils/exceptionLogger.filter';
 import { HttpExceptionFilter } from '../../utils/httpException.filter';
@@ -22,23 +26,16 @@ export class PostController {
   constructor(private readonly postService: PostService) {}
 
   @Get()
-  getAllPost() {
-    return this.postService.getAllPosts();
+  getAllPost(@Query() { page, limit, start }: PaginationPostDto) {
+    return this.postService.getAllPosts(page, limit, start);
   }
 
   @Get(':id')
-  // @UseFilters(ExceptionLoggerFilter)
   @UseFilters(HttpExceptionFilter)
-  async getPostById(@Param() { id }: FindPostDto) {
-    return await this.postService.getPostById(id);
+  // @UseFilters(ExceptionLoggerFilter)
+  getPostById(@Param('id') id: string) {
+    return this.postService.getPostById(id);
   }
-
-  // @Get(':id')
-  // @UseFilters(HttpExceptionFilter)
-  // // @UseFilters(ExceptionLoggerFilter)
-  // getPostById(@Param('id') id: string) {
-  //   return this.postService.getPostById(id);
-  // }
 
   @Post()
   @UseGuards(AuthGuard('jwt'))

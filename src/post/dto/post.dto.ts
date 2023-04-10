@@ -1,7 +1,8 @@
-import { IsMongoId, IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 
 export class CreatePostDto {
-  @IsNotEmpty() title: string;
+  @IsNotEmpty()
+  title: string;
   description: string;
   content: string;
   user: string;
@@ -9,11 +10,20 @@ export class CreatePostDto {
 }
 
 export class UpdatePostDto {
-  @IsNotEmpty() title: string;
-  description: string;
+  @IsNotEmpty()
+  id: number;
   content: string;
+  @IsNotEmpty()
+  title: string;
 }
 
-export class FindPostDto {
-  @IsMongoId() id;
+export class PaginationPostDto {
+  // @IsNotEmpty()
+  page: number;
+
+  @IsNotEmpty()
+  limit: number;
+
+  // @IsNotEmpty()
+  start: string;
 }
