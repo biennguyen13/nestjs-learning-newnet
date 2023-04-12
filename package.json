@@ -38,6 +38,7 @@
     "passport-jwt": "^4.0.0"
   },
   "devDependencies": {
+    "@nestjs/cqrs": "^9.0.1",
     "@types/bcrypt": "^5.0.0",
     "@types/passport-jwt": "^3.0.6",
     "@nestjs/cli": "^9.0.0",

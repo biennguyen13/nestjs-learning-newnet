@@ -4,11 +4,14 @@ import { PostService } from './services/post.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PostSchema } from './models/post.model';
 import { PostRepository } from './repositories/post.repository';
+import { UserModule } from '../user/user.module';
 import { CategorySchema } from './models/category.model';
-import { CategoryService } from './services/category.service';
-import { CategoryRepository } from './repositories/category.repository';
 import { CategoryController } from './controllers/category.controller';
-import { UserModule } from 'src/user/user.module';
+import { CategoryRepository } from './repositories/category.repository';
+import { CategoryService } from './services/category.service';
+import { CqrsModule } from '@nestjs/cqrs';
+import { CreatePostHandler } from './handler/createPost.handler';
+import { GetPostHandler } from './handler/getPost.handler';
 
 @Module({
   imports: [
@@ -23,8 +26,16 @@ import { UserModule } from 'src/user/user.module';
       },
     ]),
     UserModule,
+    CqrsModule,
   ],
   controllers: [PostController, CategoryController],
-  providers: [PostService, CategoryService, PostRepository, CategoryRepository],
+  providers: [
+    PostService,
+    PostRepository,
+    CategoryRepository,
+    CategoryService,
+    CreatePostHandler,
+    GetPostHandler,
+  ],
 })
 export class PostModule {}
